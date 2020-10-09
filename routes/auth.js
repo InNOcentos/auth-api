@@ -68,7 +68,7 @@ router.post("/refresh", async (req, res, next) => {
       const {_id} = userData;
       const {accessToken, refreshToken} = jwtMakeTokensHelper({_id});
       console.log({accessToken, refreshToken});
-      await RefreshTokenModel({token}).updateOne({token},{refreshToken});
+      await RefreshTokenModel.updateOne({token},{refreshToken});
 
       return res.status(200).json({accessToken, refreshToken});
     });
@@ -82,7 +82,7 @@ router.post("/logout", userAuthenticatorJwtRefresh,async (req, res, next) => {
   try {
     const token = res.locals.refToken;
     console.log({token})
-    await RefreshTokenModel({token}).updateOne();
+    await RefreshTokenModel.deleteOne({token});
 
     return res.sendStatus(203);
   } catch (error) {
